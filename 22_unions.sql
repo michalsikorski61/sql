@@ -1,0 +1,1 @@
+-- UNION combines the results of two or more SELECT statements
