@@ -27,7 +27,7 @@ SELECT * FROM transactions;
 ALTER TABLE transactions DROP FOREIGN KEY transactions_ibfk_1;
 
 ALTER TABLE transactions ADD CONSTRAINT fk_customer_id FOREIGN KEY(customer_id) REFERENCES customers(customer_id); -- you don't need to give a name to foreaign key
-
+16
 DELETE FROM transactions;
 SELECT * FROM transactions;
 
