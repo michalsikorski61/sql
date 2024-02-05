@@ -7,9 +7,9 @@ CREATE DATABASE mydb;
 USE mydb;
 
 -- Creation of a table
--- This command creates a new table named 'emploees' (which appears to be a typo and is later corrected to 'employees'). The table structure includes columns for employee details such as ID, name, pay, job, hire date, and supervisor.
+-- This command creates a new table named 'emploees' (intended to be 'employees'), which includes columns for employee details such as ID, name, pay, job, hire date, and supervisor.
 CREATE TABLE emploees(
-	employee_id INT PRIMARY KEY AUTO_INCREMENT, -- Unique ID for each employee, auto-increments for new entries
+    employee_id INT PRIMARY KEY AUTO_INCREMENT, -- Unique ID for each employee, auto-increments for new entries
     first_name VARCHAR(25), -- Employee's first name, up to 25 characters
     last_name VARCHAR(25), -- Employee's last name, up to 25 characters
     hourly_pay DECIMAL(2,2), -- Hourly pay, mistakenly limited to 99 cents, will be corrected later
@@ -46,11 +46,26 @@ SELECT * FROM employees;
 -- Calculating the average hourly pay alongside individual employee details
 -- This query selects first name, last name, and hourly pay for each employee, and also calculates the average hourly pay across all employees, displaying this average alongside each employee's details.
 SELECT first_name, last_name, hourly_pay,
-	(SELECT AVG(hourly_pay) FROM employees) AS avg_pay -- Subquery to calculate the average hourly pay
+    (SELECT AVG(hourly_pay) FROM employees) AS avg_pay -- Subquery to calculate the average hourly pay
 FROM employees;
 
 -- Filtering employees earning more than the average hourly pay
 -- This query selects employees whose hourly pay is above the average across all employees. It demonstrates the use of a subquery to dynamically determine the average hourly pay used in the comparison.
 SELECT first_name, last_name, hourly_pay FROM employees WHERE hourly_pay > (
-	SELECT AVG(hourly_pay) FROM employees -- Subquery for calculating the average hourly pay to use in the comparison
+    SELECT AVG(hourly_pay) FROM employees -- Subquery for calculating the average hourly pay to use in the comparison
+);
+
+-- Retrieving unique customer IDs from the transactions table
+-- This command selects distinct (unique) customer IDs from the transactions table, excluding any null values. It's useful for identifying all customers who have made transactions.
+SELECT DISTINCT customer_id FROM transactions WHERE customer_id IS NOT NULL;
+
+-- Selecting customer names based on transactions
+-- This query selects the first and last names of customers from the customers table,
+-- but only for those customers who have made transactions. This is achieved by using a subquery
+-- that fetches distinct customer IDs from the transactions table where the customer_id is not null.
+-- The WHERE clause with the IN operator filters the main query's results to include only those customers
+-- whose IDs are in the list of IDs returned by the subquery.
+SELECT first_name, last_name FROM customers 
+WHERE customer_id IN (
+    SELECT DISTINCT customer_id FROM transactions WHERE customer_id IS NOT NULL
 );
